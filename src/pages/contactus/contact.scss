@@ -1,0 +1,300 @@
+// ContactUs.scss
+$primary-color: #0066cc;
+$secondary-color: #00aeef;
+$accent-color: #00c853;
+$text-color: #4a4a4a;
+$light-text: #6d6d6d;
+$heading-color: #222222;
+$white: #ffffff;
+$light-bg: #f9f9f9;
+$border-color: #e0e0e0;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Mixins
+@mixin card-shadow {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+@mixin section-padding {
+  padding: 80px 0;
+}
+
+// Base Styles
+.contact-us-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: $text-color;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn-primary {
+  background: $primary-color;
+  color: $white;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: $transition;
+  font-size: 16px;
+  
+  &:hover {
+    background: darken($primary-color, 10%);
+    transform: translateY(-2px);
+  }
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 10px 25px;
+  border: 2px solid $primary-color;
+  color: $primary-color;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: $transition;
+  margin-top: 15px;
+  font-size: 14px;
+  
+  &:hover {
+    background: $primary-color;
+    color: $white;
+    transform: translateY(-2px);
+  }
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+  
+  .subtitle {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: $secondary-color;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+  
+  h2 {
+    font-size: 36px;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: $heading-color;
+  }
+}
+
+// Hero Section
+.contact-hero {
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: $white;
+  padding: 120px 0 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.ibb.co/4T2Y8w0/energy-pattern.png') center/cover;
+    opacity: 0.1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 20px;
+    font-weight: 300;
+    opacity: 0.9;
+    margin-bottom: 0;
+  }
+}
+
+// Contact Cards Section
+.contact-cards-section {
+  @include section-padding;
+  background-color: $white;
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 30px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact-card {
+    padding: 40px 30px;
+    border-radius: 8px;
+    background: $light-bg;
+    text-align: center;
+    transition: $transition;
+    @include card-shadow;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 25px;
+      background: rgba($primary-color, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 30px;
+        height: 30px;
+        color: $primary-color;
+      }
+    }
+
+    h3 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: $primary-color;
+    }
+
+    p {
+      margin-bottom: 10px;
+      color: $text-color;
+    }
+  }
+}
+
+// Contact Form Section
+.contact-form-section {
+  @include section-padding;
+  background-color: $light-bg;
+
+  .form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: $white;
+    border-radius: 8px;
+    padding: 50px;
+    @include card-shadow;
+
+    @media (max-width: 768px) {
+      padding: 30px;
+    }
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 40px;
+
+    .subtitle {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      color: $secondary-color;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      font-size: 32px;
+      line-height: 1.3;
+      margin-bottom: 15px;
+      color: $heading-color;
+    }
+
+    p {
+      color: $light-text;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .contact-form {
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+
+      @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: $heading-color;
+      }
+
+      input, select, textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: $transition;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+        }
+      }
+
+      textarea {
+        min-height: 150px;
+        resize: vertical;
+      }
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+    }
+  }
+}
+
+// Map Section
+.map-section {
+  @include section-padding;
+  background-color: $white;
+
+  .map-container {
+    border-radius: 8px;
+    overflow: hidden;
+    @include card-shadow;
+  }
+}
