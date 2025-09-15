@@ -5,7 +5,7 @@ import deduruOya4 from './assets/deduruoya4.jpg';
 import deduruOya5 from './assets/deduruoya5.jpg';
 import deduruOya6 from './assets/deduruoya6.jpg';
 import deduruOya7 from './assets/deduruOya7.jpg';
-import deduruOya8 from './assets/deduruOya8.jpg';
+import deduruOya8 from './assets/deduruoya8.jpg';
 import deduruOya9 from './assets/deduruOya9.jpg';
 import deduruOya10 from './assets/deduruOya10.jpg';
 import deduruOya11 from './assets/deduruOya11.jpg';
