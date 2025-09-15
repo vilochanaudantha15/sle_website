@@ -4,8 +4,7 @@ import ceoimg from "../../assets/ceo.jpg";
 import signature from "../../assets/signature.png";
 import sethsiripaya from "../../assets/sethsiripaya.jpg";
 import deduruoyax from "../../assets/deduruoya8.jpg";
-import companyVideo from "../../assets/Seethawaka.mp4"; // Local video asset as fallback for hero section
-import companyvideo2 from "../../assets/SLE HD.mp4"; // Local video asset as fallback for company video section
+
 
 const AboutUs = () => {
   const videoRef = useRef(null);
