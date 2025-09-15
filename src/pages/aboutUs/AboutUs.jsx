@@ -56,7 +56,7 @@ const AboutUs = () => {
           poster={sethsiripaya} // Use local image as poster
         >
           <source src="https://drive.google.com/uc?export=download&id=1f5PMzy-hTI4LyNSU5mxMp2EBS5jtrvQp" type="video/mp4" />
-          <source src={companyVideo} type="video/mp4" /> {/* Fallback to local video */}
+          
           <p>Your browser does not support the video tag. <a href="https://drive.google.com/uc?export=download&id=1f5PMzy-hTI4LyNSU5mxMp2EBS5jtrvQp">Download the video</a>.</p>
         </video>
 
@@ -116,7 +116,6 @@ const AboutUs = () => {
                 className="sle-company-video"
               >
                 <source src="https://drive.google.com/uc?export=download&id=1TxYT9A2J6_YdRC8iiFrLBSpJu-YAL3s6" type="video/mp4" />
-                <source src={companyvideo2} type="video/mp4" /> {/* Fallback to local video */}
                 <p>Your browser does not support the video tag. <a href="https://drive.google.com/uc?export=download&id=1TxYT9A2J6_YdRC8iiFrLBSpJu-YAL3s6">Download the video</a>.</p>
               </video>
             </div>
