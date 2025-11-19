@@ -12,6 +12,11 @@ const PowerPlantDetails = () => {
 
   const plant = powerPlants.find((p) => p.id === Number(plantId));
 
+  // THIS IS THE ONLY CHANGE — Scroll to top when page loads or plant changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [plantId]);
+
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
     return () => clearTimeout(timer);
@@ -33,7 +38,6 @@ const PowerPlantDetails = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
-
   const tabVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
@@ -172,39 +176,40 @@ const PowerPlantDetails = () => {
   }
 
   const plantMetrics = {
-    kumbalgamuwa: {
-      energyOutput: '447.14',
-      outputUnit: 'MWh',
-      capacityFactor: '47.14',
-      availability: '98.2',
-      co2Reduction: '12,450',
-      efficiency: '94.7',
-    },
-    deduruoya: {
-      energyOutput: '128,577',
-      outputUnit: 'kWh',
-      capacityFactor: '13.54',
-      availability: '96.8',
-      co2Reduction: '8,720',
-      efficiency: '92.3',
-    },
-    biomed: {
-      energyOutput: '03,779',
-      outputUnit: 'kWh',
-      capacityFactor: '0.56',
-      availability: '95.4',
-      co2Reduction: '1,230',
-      efficiency: '89.6',
-    },
-  };
+  kumbalgamuwa: {
+    energyOutput: '7.04 GWH',
+    outputUnit: 'GWH',
+    availability: '79.34',
+    efficiency: '94.7',
+    waterFlowRate: '12.4 m³/s',
+    turbineType: 'Francis Turbine',
+  },
+  deduruoya: {
+    energyOutput: '4.98 GWH',
+    outputUnit: 'GWH',
+    availability: '72.32',
+    efficiency: '92.3',
+    waterFlowRate: '25.7 m³/s',
+    turbineType: 'Kaplan Turbine',
+  },
+  biomed: {
+    energyOutput: '6.69 GWH',
+    outputUnit: 'GWH',
+    availability: '33.29',
+    efficiency: '89.6',
+    waterFlowRate: '3.2 m³/s',
+    turbineType: 'Pelton Turbine',
+  },
+};
+
 
   const currentMetrics = plantMetrics[plant.title.toLowerCase().replace(/\s+/g, '')] || {
-    energyOutput: '447.14',
+    energyOutput: '',
     outputUnit: 'MWh',
-    capacityFactor: '47.14',
-    availability: '97.5',
-    co2Reduction: '10,000',
-    efficiency: '93.2',
+    capacityFactor: '',
+    availability: '',
+    turbineType: '',
+    efficiency: '',
   };
 
   const shouldShowStats = !['HeadOffice', 'MEMP', 'SCALP'].includes(plant.plantType);
@@ -272,7 +277,7 @@ const PowerPlantDetails = () => {
                     </motion.div>
                     <div className="powerplant-status-metric">
                       <span className="powerplant-metric-value">{currentMetrics.availability}%</span>
-                      <span className="powerplant-metric-label">Availability</span>
+                      <span className="powerplant-metric-label">Plant Factor</span>
                     </div>
                   </div>
                 </motion.div>
@@ -308,8 +313,8 @@ const PowerPlantDetails = () => {
             {[
               { icon: '⚡', label: 'Installed Capacity', value: plant.capacity, trend: '+2.3%' },
               { icon: '🌿', label: 'Daily Output', value: currentMetrics.energyOutput, trend: '+1.7%' },
-              { icon: '📈', label: 'Capacity Factor', value: `${currentMetrics.capacityFactor}%`, trend: '±0.0%' },
-              { icon: '🌍', label: 'CO₂ Reduction (tons)', value: currentMetrics.co2Reduction, trend: '+5.2%', highlight: true },
+              { icon: '📈', label: 'Water FlowRate', value: `${currentMetrics.waterFlowRate}%`, trend: '±0.0%' },
+              { icon: '🌍', label: 'Turbine Type', value: currentMetrics.turbineType, trend: '+5.2%', highlight: true },
             ].map((stat, index) => (
               <motion.div
                 key={index}
