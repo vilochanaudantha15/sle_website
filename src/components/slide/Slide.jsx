@@ -19,7 +19,6 @@ const Slide = ({ slidesToShow = 3, arrowsScroll = 1 }) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Arrow key navigation
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (!sliderRef.current) return;
@@ -65,27 +64,23 @@ const Slide = ({ slidesToShow = 3, arrowsScroll = 1 }) => {
     }
   };
 
-  // Helper to render the correct quick-stats per plant
+  // Final version: Head Office = no stats at all, others = only MW
   const renderQuickStats = (plant) => {
     const isHeadOffice = plant.id === 'headoffice';
 
+    // Head Office → completely empty
     if (isHeadOffice) {
-      // Head Office → show nothing
       return null;
     }
 
-    // Regular power plants → show MW + Plant Factor (no Eff.)
+    // Only regular plants show MW (no fallback to 250 for head office)
+    if (!plant.capacity) return null;
+
     return (
-      <>
-        <div className="stat">
-          <span className="stat-value">{plant.capacity || '250'}</span>
-          <span className="stat-label">MW</span>
-        </div>
-        <div className="stat">
-          <span className="stat-value">{plant.factor || '92'}</span>
-          <span className="stat-label">Plant Factor %</span>
-        </div>
-      </>
+      <div className="stat">
+        <span className="stat-value">{plant.capacity}</span>
+        <span className="stat-label">MW</span>
+      </div>
     );
   };
 
@@ -151,7 +146,6 @@ const Slide = ({ slidesToShow = 3, arrowsScroll = 1 }) => {
                 onClick={() => handleTileClick(plant.id)}
               >
                 <div className="card-inner">
-                  {/* Image Section */}
                   <div className="card-image">
                     <img
                       src={plant.images[0] || 'https://via.placeholder.com/400x300'}
@@ -159,7 +153,6 @@ const Slide = ({ slidesToShow = 3, arrowsScroll = 1 }) => {
                       loading="lazy"
                     />
                     <div className="image-overlay" />
-
                     <div className="card-badge">
                       <span className="badge-text">{plant.type || 'Energy'}</span>
                     </div>
@@ -175,30 +168,26 @@ const Slide = ({ slidesToShow = 3, arrowsScroll = 1 }) => {
                       </button>
                     </div>
 
-                    {/* Conditional Quick Stats */}
+                    {/* Quick Stats – Head Office has none */}
                     <div className="quick-stats">
                       {renderQuickStats(plant)}
                     </div>
                   </div>
 
-                  {/* Content unchanged */}
+                  {/* Rest of card unchanged */}
                   <div className="card-content">
                     <div className="content-main">
                       <div className="plant-header">
                         <h3 className="plant-title">{plant.title}</h3>
                         <div className="status-indicator active"></div>
                       </div>
-
                       <p className="plant-description">{plant.desc}</p>
 
                       <div className="plant-features">
                         <div className="feature">
                           <div className="feature-icon">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                              <path
-                                d="M12 2L13.09 8.26L20 9L14.55 13.47L16.18 20L12 16.77L7.82 20L9.45 13.47L4 9L10.91 8.26L12 2Z"
-                                fill="currentColor"
-                              />
+                              <path d="M12 2L13.09 8.26L20 9L14.55 13.47L16.18 20L12 16.77L7.82 20L9.45 13.47L4 9L10.91 8.26L12 2Z" fill="currentColor" />
                             </svg>
                           </div>
                           <span>Renewable</span>
@@ -227,13 +216,7 @@ const Slide = ({ slidesToShow = 3, arrowsScroll = 1 }) => {
                       <button className="cta-button">
                         <span>Explore Facility</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                          <path
-                            d="M5 12H19M19 12L12 5M19 12L12 19"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
+                          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </button>
                     </div>
@@ -244,7 +227,7 @@ const Slide = ({ slidesToShow = 3, arrowsScroll = 1 }) => {
           </Slider>
         </div>
 
-        {/* Progress & Dots unchanged */}
+        {/* Progress & Dots */}
         <div className="slider-controls">
           <div className="slider-progress">
             <div
