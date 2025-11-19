@@ -183,11 +183,11 @@ const Projects = () => {
               transition={{ delay: 0.6 }}
             >
               <div className="stat">
-                <h3>50+</h3>
+                <h3>10+</h3>
                 <span>Projects Completed</span>
               </div>
               <div className="stat">
-                <h3>120 MW</h3>
+                <h3>20GWH</h3>
                 <span>Energy Capacity</span>
               </div>
               <div className="stat">
