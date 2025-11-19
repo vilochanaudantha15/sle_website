@@ -923,6 +923,7 @@
 // General Responsive Fixes (kept your existing ones + improved)
 @media (max-width: 768px) {
   .home {
+    margin-top: 4rem;
     .section-header h2 { font-size: 2.2rem; }
     .features-section .features-grid { grid-template-columns: 1fr; gap: 3rem; }
     .explore-section .solutions-grid { grid-template-columns: 1fr; }
@@ -932,6 +933,7 @@
 
 @media (max-width: 480px) {
   .home {
+    
     .container { padding: 0 15px; }
     .section-header h2 { font-size: 1.9rem; }
     .features-content h1 { font-size: 2.2rem; }
