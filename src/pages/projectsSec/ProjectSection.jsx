@@ -187,11 +187,11 @@ const Projects = () => {
             transition={{ delay: 0.6 }}
           >
             <div className="stat">
-              <h3>50+</h3>
+              <h3>10+</h3>
               <span>Projects Completed</span>
             </div>
             <div className="stat">
-              <h3>120 MW</h3>
+              <h3>20GWH+</h3>
               <span>Energy Capacity</span>
             </div>
             <div className="stat">
@@ -344,36 +344,7 @@ const Projects = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="modern-projects-stats">
-        <div className="container">
-          <motion.div 
-            className="stats-grid"
-            initial="hidden"
-            whileInView="visible"
-            variants={containerVariants}
-            viewport={{ once: true }}
-          >
-            {[
-              { number: '50+', label: 'Projects Completed', icon: 'Construction' },
-              { number: '120 MW', label: 'Energy Capacity', icon: 'Lightning' },
-              { number: '75K+', label: 'Households Served', icon: 'Home' },
-              { number: '15', label: 'Districts Covered', icon: 'Map' }
-            ].map((stat, index) => (
-              <motion.div 
-                key={index}
-                className="stat-card glass-card"
-                variants={itemVariants}
-                whileHover={{ y: -10, scale: 1.05 }}
-              >
-                <div className="stat-icon">{stat.icon}</div>
-                <div className="stat-number">{stat.number}</div>
-                <div className="stat-label">{stat.label}</div>
-                <div className="stat-glow"></div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      
 
       {/* CTA Section */}
       <section className="modern-projects-cta">
