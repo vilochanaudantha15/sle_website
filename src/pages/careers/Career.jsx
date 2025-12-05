@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FaMapMarkerAlt,
   FaBriefcase,
-  FaClock,
   FaChevronRight,
   FaUsers,
   FaGraduationCap,
@@ -22,6 +21,9 @@ import {
   FaUpload,
 } from "react-icons/fa";
 import "./Career.scss";
+
+// Relative API base — works on localhost AND your official server
+const API_BASE = "/api";
 
 const Career = () => {
   const [activeTab, setActiveTab] = useState("all");
@@ -44,10 +46,10 @@ const Career = () => {
     cvFile: null,
   });
 
-  // Fetch jobs from backend
+  // Fetch all jobs
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/jobs")
+      .get(`${API_BASE}/jobs`)
       .then((res) => {
         setJobListings(res.data);
         setLoading(false);
@@ -59,7 +61,7 @@ const Career = () => {
       });
   }, []);
 
-  // Dynamic categories based on real data
+  // Dynamic job categories from real data
   const uniqueCategories = [...new Set(jobListings.map((job) => job.category))];
 
   const jobCategories = [
@@ -111,18 +113,12 @@ const Career = () => {
     }
 
     const uploadData = new FormData();
-    uploadData.append("fullName", formData.fullName);
-    uploadData.append("mobileNo", formData.mobileNo);
-    uploadData.append("email", formData.email);
-    uploadData.append("passportNo", formData.passportNo);
-    uploadData.append("jobIndustry", formData.jobIndustry);
-    uploadData.append("interestedPosition", formData.interestedPosition);
-    uploadData.append("experienceLocation", formData.experienceLocation);
-    uploadData.append("yearsOfExperience", formData.yearsOfExperience);
-    uploadData.append("cvFile", formData.cvFile);
+    Object.keys(formData).forEach((key) => {
+      uploadData.append(key, formData[key]);
+    });
 
     try {
-      const res = await axios.post("http://localhost:5000/api/jobs/apply", uploadData, {
+      const res = await axios.post(`${API_BASE}/jobs/apply`, uploadData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -354,7 +350,7 @@ const Career = () => {
         </div>
       </section>
 
-      {/* Application Modal - 100% your original design */}
+      {/* Application Modal */}
       <AnimatePresence>
         {showApplicationForm && (
           <motion.div
