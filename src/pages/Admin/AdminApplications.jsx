@@ -4,14 +4,31 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
-  FaUsers, FaDownload, FaSearch, FaTimes, FaFilePdf,
-  FaEnvelope, FaPhone, FaBriefcase, FaMapMarkerAlt,
-  FaCalendarAlt, FaUserCircle, FaSignOutAlt,
-  FaFilter, FaSort, FaChevronDown, FaCrown,
-  FaEye, FaExternalLinkAlt, FaStar, FaChartLine,
-  FaBell, FaCog, FaMoon, FaSun
+  FaUsers,
+  FaDownload,
+  FaSearch,
+  FaTimes,
+  FaEnvelope,
+  FaPhone,
+  FaBriefcase,
+  FaCalendarAlt,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaFilter,
+  FaSort,
+  FaChevronDown,
+  FaCrown,
+  FaEye,
+  FaStar,
+  FaBell,
+  FaMoon,
+  FaSun,
 } from "react-icons/fa";
-import "./adminApplications.scss";
+import "./adminApplicationsUnique.scss";
+
+// Clean relative URLs — works everywhere
+const API_BASE = "/api";
+const UPLOADS_BASE = "/uploads";
 
 const AdminApplicationsUnique = () => {
   const [applications, setApplications] = useState([]);
@@ -23,45 +40,46 @@ const AdminApplicationsUnique = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const userMenuRef = useRef(null);
 
+  const userMenuRef = useRef(null);
   const navigate = useNavigate();
+
+  // Get admin info
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const adminName = user?.full_name || "Admin";
   const adminEmail = user?.email || "admin@example.com";
   const adminInitials = adminName
     .split(" ")
-    .map(n => n[0])
+    .map((n) => n[0])
     .join("")
     .toUpperCase();
 
+  // Fetch applications on mount
   useEffect(() => {
     fetchApplications();
+
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setShowUserMenu(false);
+      }
+    };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Dark mode toggle
   useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
+    document.body.classList.toggle("dark-mode", isDarkMode);
   }, [isDarkMode]);
-
-  const handleClickOutside = (e) => {
-    if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
-      setShowUserMenu(false);
-    }
-  };
 
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/jobs/applications/all");
+      const res = await axios.get(`${API_BASE}/jobs/applications/all`);
       setApplications(res.data);
       setLoading(false);
     } catch (err) {
+      console.error("Error fetching applications:", err);
       setError("Failed to load applications.");
       setLoading(false);
     }
@@ -74,69 +92,78 @@ const AdminApplicationsUnique = () => {
   };
 
   const getStatusColor = (status) => {
-    switch (status) {
-      case "approved": return "#10b981";
-      case "rejected": return "#ef4444";
-      case "pending": return "#f59e0b";
-      default: return "#64748b";
+    switch (status?.toLowerCase()) {
+      case "approved":
+        return "#10b981";
+      case "rejected":
+        return "#ef4444";
+      case "pending":
+        return "#f59e0b";
+      default:
+        return "#64748b";
     }
   };
 
+  // Filter & Sort Applications
   const filteredApps = applications
     .filter((app) => {
-      const matchesSearch = [app.fullName, app.email, app.interestedPosition].some(field =>
-        field?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const search = searchTerm.toLowerCase();
+      const matchesSearch =
+        app.fullName?.toLowerCase().includes(search) ||
+        app.email?.toLowerCase().includes(search) ||
+        app.interestedPosition?.toLowerCase().includes(search);
       const matchesStatus = statusFilter === "all" || app.status === statusFilter;
       return matchesSearch && matchesStatus;
     })
     .sort((a, b) => {
-      switch (sortBy) {
-        case "newest":
-          return new Date(b.created_at) - new Date(a.created_at);
-        case "oldest":
-          return new Date(a.created_at) - new Date(b.created_at);
-        case "name":
-          return a.fullName.localeCompare(b.fullName);
-        default:
-          return 0;
-      }
+      if (sortBy === "newest") return new Date(b.created_at) - new Date(a.created_at);
+      if (sortBy === "oldest") return new Date(a.created_at) - new Date(b.created_at);
+      if (sortBy === "name") return a.fullName.localeCompare(b.fullName);
+      return 0;
     });
 
   const stats = {
     total: applications.length,
-    pending: applications.filter(a => a.status === "pending").length,
-    approved: applications.filter(a => a.status === "approved").length,
-    rejected: applications.filter(a => a.status === "rejected").length,
+    pending: applications.filter((a) => a.status === "pending").length,
+    approved: applications.filter((a) => a.status === "approved").length,
+    rejected: applications.filter((a) => a.status === "rejected").length,
   };
 
-  if (loading) return (
-    <div className="admin-loading-unique">
-      <div className="modern-spinner-unique">
-        <div className="spinner-ring-unique"></div>
-        <div className="spinner-ring-unique"></div>
-        <div className="spinner-ring-unique"></div>
+  // Loading State
+  if (loading) {
+    return (
+      <div className="admin-loading-unique">
+        <div className="modern-spinner-unique">
+          <div className="spinner-ring-unique"></div>
+          <div className="spinner-ring-unique"></div>
+          <div className="spinner-ring-unique"></div>
+        </div>
+        <p>Loading applications...</p>
       </div>
-      <p>Loading applications...</p>
-    </div>
-  );
+    );
+  }
 
-  if (error) return (
-    <div className="admin-error-unique">
-      <div className="error-icon-unique">⚠️</div>
-      <p>{error}</p>
-      <button onClick={fetchApplications} className="retry-btn-unique">Retry</button>
-    </div>
-  );
+  // Error State
+  if (error) {
+    return (
+      <div className="admin-error-unique">
+        <div className="error-icon-unique">Warning</div>
+        <p>{error}</p>
+        <button onClick={fetchApplications} className="retry-btn-unique">
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <motion.div 
+    <motion.div
       className={`admin-applications-page-unique ${isDarkMode ? "dark" : ""}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Glassmorphism Background Elements */}
+      {/* Background Effects */}
       <div className="background-elements-unique">
         <div className="bg-circle-1-unique"></div>
         <div className="bg-circle-2-unique"></div>
@@ -144,8 +171,7 @@ const AdminApplicationsUnique = () => {
       </div>
 
       <div className="container-unique">
-
-        {/* Modern Top Navigation */}
+        {/* Navbar */}
         <nav className="admin-navbar-unique">
           <div className="nav-left-unique">
             <div className="brand-logo-unique">
@@ -165,16 +191,11 @@ const AdminApplicationsUnique = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="modern-search-unique"
               />
-              <div className="search-actions-unique">
-                <button className="search-filter-btn-unique">
-                  <FaFilter />
-                </button>
-              </div>
             </div>
           </div>
 
           <div className="nav-right-unique">
-            <button 
+            <button
               className="theme-toggle-unique"
               onClick={() => setIsDarkMode(!isDarkMode)}
             >
@@ -187,7 +208,7 @@ const AdminApplicationsUnique = () => {
             </button>
 
             <div className="user-profile-container-unique" ref={userMenuRef}>
-              <button 
+              <button
                 className="user-profile-btn-unique"
                 onClick={() => setShowUserMenu(!showUserMenu)}
               >
@@ -198,108 +219,63 @@ const AdminApplicationsUnique = () => {
                   <span className="user-name-unique">{adminName}</span>
                   <span className="user-role-unique">Super Admin</span>
                 </div>
-                <FaChevronDown className={`dropdown-icon-unique ${showUserMenu ? "rotate" : ""}`} />
+                <FaChevronDown
+                  className={`dropdown-icon-unique ${showUserMenu ? "rotate" : ""}`}
+                />
               </button>
 
-              {showUserMenu && (
-                <motion.div 
-                  className="user-dropdown-unique"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <div className="dropdown-header-unique">
-                    <div className="dropdown-avatar-unique">
-                      <span>{adminInitials}</span>
+              <AnimatePresence>
+                {showUserMenu && (
+                  <motion.div
+                    className="user-dropdown-unique"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                  >
+                    <div className="dropdown-header-unique">
+                      <div className="dropdown-avatar-unique">
+                        <span>{adminInitials}</span>
+                      </div>
+                      <div>
+                        <h4>{adminName}</h4>
+                        <p>{adminEmail}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4>{adminName}</h4>
-                      <p>{adminEmail}</p>
+
+                    <div className="dropdown-menu-unique">
+                      <button
+                        onClick={handleLogout}
+                        className="menu-item-unique logout-item-unique"
+                      >
+                        <FaSignOutAlt /> Logout
+                      </button>
                     </div>
-                  </div>
-                  <div className="dropdown-stats-unique">
-                    <div className="stat-item-unique">
-                      <span className="stat-value-unique">98%</span>
-                      <span className="stat-label-unique">Activity</span>
-                    </div>
-                    <div className="stat-item-unique">
-                      <span className="stat-value-unique">24</span>
-                      <span className="stat-label-unique">Reviews</span>
-                    </div>
-                  </div>
-                  <div className="dropdown-menu-unique">
-                    <a href="#" className="menu-item-unique">
-                      <FaUserCircle /> My Profile
-                    </a>
-                    <a href="#" className="menu-item-unique">
-                      <FaCog /> Settings
-                    </a>
-                    <a href="#" className="menu-item-unique">
-                      <FaChartLine /> Analytics
-                    </a>
-                    <div className="menu-divider-unique"></div>
-                    <button onClick={handleLogout} className="menu-item-unique logout-item-unique">
-                      <FaSignOutAlt /> Logout
-                    </button>
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </nav>
 
-        {/* Dashboard Stats */}
+        {/* Stats */}
         <div className="dashboard-stats-unique">
-          <motion.div 
-            className="stat-card-unique"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="stat-icon-unique total-unique">
-              <FaUsers />
-            </div>
+          <motion.div className="stat-card-unique" whileHover={{ y: -5 }}>
+            <div className="stat-icon-unique total-unique"><FaUsers /></div>
             <h3>{stats.total}</h3>
             <p>Total Applications</p>
           </motion.div>
-
-          <motion.div 
-            className="stat-card-unique"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="stat-icon-unique pending-unique">
-              <FaCalendarAlt />
-            </div>
+          <motion.div className="stat-card-unique" whileHover={{ y: -5 }}>
+            <div className="stat-icon-unique pending-unique"><FaCalendarAlt /></div>
             <h3>{stats.pending}</h3>
             <p>Pending Review</p>
           </motion.div>
-
-          <motion.div 
-            className="stat-card-unique"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="stat-icon-unique approved-unique">
-              <FaStar />
-            </div>
+          <motion.div className="stat-card-unique" whileHover={{ y: -5 }}>
+            <div className="stat-icon-unique approved-unique"><FaStar /></div>
             <h3>{stats.approved}</h3>
             <p>Approved</p>
           </motion.div>
-
-          <motion.div 
-            className="stat-card-unique"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="stat-icon-unique rejected-unique">
-              <FaTimes />
-            </div>
+          <motion.div className="stat-card-unique" whileHover={{ y: -5 }}>
+            <div className="stat-icon-unique rejected-unique"><FaTimes /></div>
             <h3>{stats.rejected}</h3>
             <p>Rejected</p>
           </motion.div>
@@ -312,45 +288,35 @@ const AdminApplicationsUnique = () => {
               <h1>Applications Dashboard</h1>
               <p className="subtitle-unique">Manage and review all job applications</p>
             </div>
-            
+
             <div className="controls-unique">
               <div className="filter-controls-unique">
-                <div className="filter-group-unique">
-                  <FaFilter className="filter-icon-unique" />
-                  <select 
-                    value={statusFilter} 
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="modern-select-unique"
-                  >
-                    <option value="all">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                </div>
-                
-                <div className="filter-group-unique">
-                  <FaSort className="filter-icon-unique" />
-                  <select 
-                    value={sortBy} 
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="modern-select-unique"
-                  >
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="name">Name A-Z</option>
-                  </select>
-                </div>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="modern-select-unique"
+                >
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="modern-select-unique"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="name">Name A-Z</option>
+                </select>
               </div>
-              
-              <button 
-                className="refresh-btn-unique"
-                onClick={fetchApplications}
-              >
+
+              <button className="refresh-btn-unique" onClick={fetchApplications}>
                 Refresh
               </button>
-
-              <button 
+              <button
                 className="refresh-btn-unique"
                 onClick={() => navigate("/jobmanagement")}
               >
@@ -375,13 +341,13 @@ const AdminApplicationsUnique = () => {
                 >
                   <div className="card-header-unique">
                     <div className="applicant-avatar-unique">
-                      <span>{app.fullName.charAt(0)}</span>
+                      <span>{app.fullName.charAt(0).toUpperCase()}</span>
                     </div>
                     <div className="applicant-info-unique">
                       <h3>{app.fullName}</h3>
                       <div className="applicant-meta-unique">
                         <span className="position-tag-unique">{app.interestedPosition}</span>
-                        <span 
+                        <span
                           className="status-badge-unique"
                           style={{ backgroundColor: getStatusColor(app.status) }}
                         >
@@ -390,11 +356,11 @@ const AdminApplicationsUnique = () => {
                       </div>
                     </div>
                     <span className="card-date-unique">
-                      {new Date(app.created_at).toLocaleDateString('en-US', { 
-                        month: 'short', 
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
+                      {new Date(app.created_at).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
                       })}
                     </span>
                   </div>
@@ -402,37 +368,31 @@ const AdminApplicationsUnique = () => {
                   <div className="card-body-unique">
                     <div className="info-row-unique">
                       <FaEnvelope className="info-icon-unique" />
-                      <span className="info-text-unique">{app.email}</span>
+                      <span>{app.email}</span>
                     </div>
                     <div className="info-row-unique">
                       <FaPhone className="info-icon-unique" />
-                      <span className="info-text-unique">{app.mobileNo}</span>
+                      <span>{app.mobileNo}</span>
                     </div>
                     <div className="info-row-unique">
                       <FaBriefcase className="info-icon-unique" />
-                      <span className="info-text-unique">
-                        {app.yearsOfExperience} years experience
-                      </span>
+                      <span>{app.yearsOfExperience} years experience</span>
                     </div>
                   </div>
 
                   <div className="card-footer-unique">
-                    <div className="skill-tags-unique">
-                      {app.skills?.slice(0, 3).map((skill, idx) => (
-                        <span key={idx} className="skill-tag-unique">{skill}</span>
-                      ))}
-                    </div>
-                    
                     <div className="card-actions-unique">
-                      <button 
+                      <button
                         className="view-btn-unique"
                         onClick={() => setSelectedApp(app)}
                       >
                         <FaEye /> View
                       </button>
                       <a
-                        href={`http://localhost:5000/uploads/${app.cvFile}`}
+                        href={`${UPLOADS_BASE}/${app.cvFile}`}
                         download
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="download-btn-unique"
                       >
                         <FaDownload /> CV
@@ -442,29 +402,27 @@ const AdminApplicationsUnique = () => {
                 </motion.div>
               ))}
             </AnimatePresence>
-          </div>
 
-          {filteredApps.length === 0 && (
-            <motion.div 
-              className="no-results-unique"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <div className="empty-state-unique">
-                <div className="empty-icon-unique">📄</div>
-                <h3>No applications found</h3>
-                <p>Try adjusting your search or filter criteria</p>
+            {filteredApps.length === 0 && (
+              <div className="no-results-unique">
+                <div className="empty-state-unique">
+                  <div className="empty-icon-unique">No applications</div>
+                  <h3>No applications found</h3>
+                  <p>Try adjusting your search or filters</p>
+                </div>
               </div>
-            </motion.div>
-          )}
+            )}
+          </div>
         </main>
       </div>
 
-      {/* Modern Modal */}
+      {/* End container-unique */}
+
+      {/* Modal */}
       <AnimatePresence>
         {selectedApp && (
-          <motion.div 
-            className="modal-overlay-unique" 
+          <motion.div
+            className="modal-overlay-unique"
             onClick={() => setSelectedApp(null)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -479,13 +437,16 @@ const AdminApplicationsUnique = () => {
             >
               <div className="modal-header-unique">
                 <div className="modal-avatar-unique">
-                  <span>{selectedApp.fullName.charAt(0)}</span>
+                  <span>{selectedApp.fullName.charAt(0).toUpperCase()}</span>
                 </div>
                 <div className="modal-title-unique">
                   <h2>{selectedApp.fullName}</h2>
                   <p>{selectedApp.interestedPosition}</p>
                 </div>
-                <button className="close-btn-unique" onClick={() => setSelectedApp(null)}>
+                <button
+                  className="close-btn-unique"
+                  onClick={() => setSelectedApp(null)}
+                >
                   <FaTimes />
                 </button>
               </div>
@@ -494,41 +455,28 @@ const AdminApplicationsUnique = () => {
                 <div className="detail-grid-unique">
                   <div className="detail-card-unique">
                     <FaEnvelope className="detail-icon-unique" />
-                    <div>
-                      <label>Email</label>
-                      <p>{selectedApp.email}</p>
-                    </div>
+                    <div><label>Email</label><p>{selectedApp.email}</p></div>
                   </div>
-                  
                   <div className="detail-card-unique">
                     <FaPhone className="detail-icon-unique" />
-                    <div>
-                      <label>Phone</label>
-                      <p>{selectedApp.mobileNo}</p>
-                    </div>
+                    <div><label>Phone</label><p>{selectedApp.mobileNo}</p></div>
                   </div>
-                  
                   <div className="detail-card-unique">
                     <FaBriefcase className="detail-icon-unique" />
-                    <div>
-                      <label>Experience</label>
-                      <p>{selectedApp.yearsOfExperience} years</p>
-                    </div>
+                    <div><label>Experience</label><p>{selectedApp.yearsOfExperience} years</p></div>
                   </div>
-                  
                   <div className="detail-card-unique">
                     <FaCalendarAlt className="detail-icon-unique" />
-                    <div>
-                      <label>Applied</label>
-                      <p>{new Date(selectedApp.created_at).toLocaleString()}</p>
-                    </div>
+                    <div><label>Applied</label><p>{new Date(selectedApp.created_at).toLocaleString()}</p></div>
                   </div>
                 </div>
 
                 <div className="modal-actions-unique">
                   <a
-                    href={`http://localhost:5000/uploads/${selectedApp.cvFile}`}
+                    href={`${UPLOADS_BASE}/${selectedApp.cvFile}`}
                     download
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="modal-download-btn-unique"
                   >
                     <FaDownload /> Download CV
