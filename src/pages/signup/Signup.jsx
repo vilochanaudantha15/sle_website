@@ -1,39 +1,48 @@
-import React, { useState } from 'react';
-import './signup.scss';
-import { FaApple, FaGoogle } from 'react-icons/fa';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // optional, for redirect
+// src/pages/SignupPage.jsx (or wherever you keep it)
+import React, { useState } from "react";
+import "./signup.scss";
+import { FaApple, FaGoogle } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
-    full_name: '',
-    email: '',
-    password: '',
+    full_name: "",
+    email: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
-      setMessage(res.data.message);
-      setTimeout(() => navigate('/signin'), 2000); // redirect to signin after success
+      // Clean relative path — works on localhost AND your real domain
+      const res = await axios.post("/api/auth/signup", formData);
+
+      setMessage(res.data.message || "Account created successfully!");
+
+      // Redirect to sign-in after success
+      setTimeout(() => {
+        navigate("/signin");
+      }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong');
+      setError(
+        err.response?.data?.message || "Signup failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -41,7 +50,7 @@ const SignupPage = () => {
 
   return (
     <div className="signup-container">
-      {/* Left Panel: Form */}
+      {/* Left Panel - Form */}
       <div className="signup-form-panel">
         <h1 className="logo">Sri Lanka Energies</h1>
 
@@ -69,7 +78,7 @@ const SignupPage = () => {
               type="email"
               id="email"
               name="email"
-              placeholder="amelielaurent7622@gmail.com"
+              placeholder="you@example.com"
               value={formData.email}
               onChange={handleChange}
               required
@@ -90,13 +99,17 @@ const SignupPage = () => {
               <span className="password-toggle">Eye</span>
             </div>
 
-            <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? 'Creating Account...' : 'Submit'}
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={loading}
+            >
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 
           <div className="social-login-separator">
-            <span>or</span>
+            <span>or continue with</span>
           </div>
 
           <div className="social-login">
@@ -110,23 +123,28 @@ const SignupPage = () => {
         </div>
 
         <div className="footer-links">
-          <p>Already have an account? <a href="/signin">Sign in</a></p>
+          <p>
+            Already have an account?{" "}
+            <a href="/signin" onClick={(e) => { e.preventDefault(); navigate("/signin"); }}>
+              Sign in
+            </a>
+          </p>
           <a href="#">Terms & Conditions</a>
         </div>
       </div>
 
-      {/* Right Panel */}
+      {/* Right Panel - Visual */}
       <div className="signup-visual-panel">
         <div className="content-overlay">
           <div className="task-review-card">
             <strong>Task Review With Team</strong>
             <br />
-            09:30am-10:00am
+            09:30am - 10:00am
           </div>
           <div className="daily-meeting-card">
             <strong>Daily Meeting</strong>
             <br />
-            10:00am-01:00pm
+            10:00am - 01:00pm
           </div>
         </div>
       </div>
