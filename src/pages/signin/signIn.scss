@@ -1,0 +1,222 @@
+// Variables for easy color changes
+$primary-color: #ffc400; // Yellow-orange for the submit button
+$background-gradient-start: #fff;
+$background-gradient-end: #f4e8c3; // Light yellow/cream
+$text-color: #333;
+$border-radius-large: 25px;
+
+.signup-container { // Note: Reusing this class name for layout consistency
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; 
+
+  > div {
+    border-radius: $border-radius-large;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    height: 90%;
+    max-width: 1200px;
+  }
+}
+
+.signup-form-panel { 
+  flex: 1;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(to right, $background-gradient-start, $background-gradient-end);
+  border-radius: $border-radius-large 0 0 $border-radius-large;
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $text-color;
+    margin-bottom: 30px;
+  }
+
+  .form-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: $text-color;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input {
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: white;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+
+    .password-input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        input {
+            width: 100%;
+            margin-bottom: 5px; // Reduced margin to make space for the Forgot Password link
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            color: #aaa;
+            font-size: 1rem;
+            margin-bottom: 5px; 
+        }
+    }
+    
+    // **UNIQUE STYLE FOR SIGN IN**
+    .forgot-password-link {
+        text-align: right;
+        font-size: 0.85rem;
+        color: #666;
+        text-decoration: none;
+        margin-bottom: 25px; // Space before the Sign In button
+        
+        &:hover {
+            color: $primary-color;
+        }
+    }
+
+    .submit-button {
+      padding: 15px;
+      background-color: $primary-color;
+      color: $text-color;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-bottom: 25px;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+  
+  .social-login {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    .social-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background-color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+
+      svg {
+        margin-right: 8px;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #888;
+
+    a {
+      color: $text-color;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  }
+}
+
+.signup-visual-panel {
+  flex: 1.2;
+  background-image: url('../../assets/minihydro.png'); 
+  background-size: cover;
+  background-position: center;
+  border-radius: 0 $border-radius-large $border-radius-large 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1); 
+  }
+
+  .content-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+  }
+
+  .task-review-card, .daily-meeting-card {
+      background-color: white;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: $text-color;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: absolute;
+  }
+
+  .task-review-card {
+    top: 30px;
+    right: 40px;
+    background-color: $primary-color;
+    padding: 12px 20px;
+    border-radius: 15px;
+  }
+
+  .daily-meeting-card {
+    bottom: 50px;
+    left: 20%;
+  }
+}

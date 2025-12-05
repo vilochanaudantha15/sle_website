@@ -1,0 +1,1121 @@
+// Career.scss - Energy Company Theme
+@use "sass:color";
+
+// Energy Color Palette
+$energy-orange: #FF6B35;
+$energy-blue: #2A4B8C;
+$dark-navy: #0A1929;
+$darker-navy: #051423;
+$accent-teal: #4ECDC4;
+$accent-yellow: #FFD166;
+$glass-bg: rgba(255, 255, 255, 0.05);
+$glass-border: rgba(255, 255, 255, 0.1);
+$glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+$transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+@mixin glass-effect {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid $glass-border;
+  box-shadow: $glass-shadow;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba($energy-orange, 0.4), transparent);
+  }
+}
+
+@mixin energy-gradient {
+  background: linear-gradient(45deg, rgba($energy-orange, 0.15), rgba($energy-blue, 0.1), rgba($accent-teal, 0.1));
+}
+
+@mixin floating-animation {
+  animation: float-energy 6s ease-in-out infinite;
+}
+
+@mixin gradient-text {
+  background: linear-gradient(90deg, $energy-orange, $accent-yellow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin energy-button-gradient {
+  background: linear-gradient(135deg, rgba($energy-orange, 0.2), rgba($energy-blue, 0.2));
+  border: 1px solid rgba($energy-orange, 0.3);
+  
+  &:hover {
+    background: linear-gradient(135deg, rgba($energy-orange, 0.3), rgba($energy-blue, 0.3));
+    border-color: rgba($energy-orange, 0.6);
+    box-shadow: 0 15px 40px rgba($energy-orange, 0.2);
+  }
+}
+
+@keyframes float-energy {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(1deg); }
+}
+
+@keyframes energy-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes circuit-flow {
+  0% { transform: translateX(-100%) skewX(-10deg); }
+  100% { transform: translateX(200%) skewX(-10deg); }
+}
+
+.career-page {
+  background: linear-gradient(135deg, $darker-navy 0%, $dark-navy 50%, lighten($dark-navy, 3%) 100%);
+  color: white;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba($energy-blue, 0.15) 0%, transparent 60%),
+      radial-gradient(circle at 80% 20%, rgba($energy-orange, 0.1) 0%, transparent 60%),
+      radial-gradient(circle at 40% 40%, rgba($accent-teal, 0.08) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  // Circuit Board Pattern
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(90deg, rgba($energy-orange, 0.03) 1px, transparent 1px),
+      linear-gradient(0deg, rgba($energy-orange, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 0;
+    pointer-events: none;
+  }
+}
+
+.glass-morphisms {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+
+  .glass-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.3;
+    
+    &.shape-1 {
+      @include floating-animation;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba($energy-orange, 0.15), transparent 70%);
+      top: 5%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+    
+    &.shape-2 {
+      animation: float-energy 8s ease-in-out infinite;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba($energy-blue, 0.2), transparent 70%);
+      bottom: 15%;
+      right: 10%;
+      animation-delay: -3s;
+    }
+    
+    &.shape-3 {
+      animation: float-energy 7s ease-in-out infinite;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba($accent-teal, 0.15), transparent 70%);
+      top: 60%;
+      left: 20%;
+      animation-delay: -2s;
+    }
+    
+    &.shape-4 {
+      animation: float-energy 9s ease-in-out infinite;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba($accent-yellow, 0.1), transparent 70%);
+      bottom: 40%;
+      right: 20%;
+      animation-delay: -1s;
+    }
+  }
+}
+
+.career-hero {
+  position: relative;
+  padding: 160px 0 120px;
+  overflow: hidden;
+  z-index: 2;
+  background-color: #0d0d0d; // fallback dark background
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../../assets/career.png") center/cover no-repeat;
+    z-index: 1;
+    
+    // Add a dark semi-transparent layer over the image
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); // dark overlay
+      z-index: 2;
+    }
+
+    transition: transform 0.6s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #fff;
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      text-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+
+      span {
+        display: block;
+        font-size: 4.5rem;
+        margin-top: 10px;
+        background: linear-gradient(90deg, #FEA116, #FF6A3D);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      &::after {
+        content: '';
+        display: block;
+        width: 120px;
+        height: 4px;
+        background: linear-gradient(90deg, #FEA116, #FF6A3D);
+        margin: 30px auto;
+        border-radius: 2px;
+        animation: energy-pulse 2s infinite;
+      }
+    }
+
+    p {
+      font-size: 1.3rem;
+      opacity: 0.85;
+      margin-bottom: 48px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 14px 36px;
+      font-weight: 600;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #FEA116, #FF6A3D);
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(254, 161, 22, 0.4);
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(254, 161, 22, 0.6);
+      }
+    }
+  }
+}
+
+@keyframes energy-pulse {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(1.2); opacity: 0.7; }
+}
+
+
+
+.glass-button {
+  @include glass-effect;
+  @include energy-button-gradient;
+  color: white;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: $transition;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    
+    &::before {
+      left: 100%;
+    }
+    
+    svg {
+      transform: translateX(5px);
+      color: $accent-yellow;
+    }
+  }
+
+  svg {
+    transition: transform 0.3s ease, color 0.3s ease;
+    color: $energy-orange;
+  }
+}
+
+// Why Join Us Section
+.why-join-us {
+  position: relative;
+  padding: 120px 0;
+  z-index: 2;
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 80px;
+
+    h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: white;
+      position: relative;
+      display: inline-block;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: $energy-orange;
+        border-radius: 2px;
+      }
+    }
+
+    p {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 30px auto 0;
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.glass-card {
+  @include glass-effect;
+  border-radius: 20px;
+  padding: 32px;
+  transition: $transition;
+  background: linear-gradient(135deg, 
+    rgba($energy-blue, 0.1), 
+    rgba($dark-navy, 0.1)
+  );
+  
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba($energy-orange, 0.4);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba($energy-orange, 0.05), transparent);
+    opacity: 0;
+    transition: $transition;
+    z-index: -1;
+  }
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 100px;
+
+  .value-card {
+    text-align: center;
+    background: linear-gradient(135deg, 
+      rgba($energy-blue, 0.15), 
+      rgba($dark-navy, 0.15)
+    );
+    
+    .value-icon {
+      font-size: 2.8rem;
+      margin-bottom: 24px;
+      color: $energy-orange;
+      display: inline-block;
+      padding: 20px;
+      border-radius: 50%;
+      background: rgba($energy-orange, 0.1);
+      border: 1px solid rgba($energy-orange, 0.2);
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      color: white;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+.stats-section {
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: center;
+
+    .stat-item {
+      padding: 40px 20px;
+      @include glass-effect;
+      border-radius: 16px;
+      background: linear-gradient(135deg, 
+        rgba($energy-orange, 0.05), 
+        rgba($energy-blue, 0.05)
+      );
+      
+      h3 {
+        font-size: 3.2rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+        background: linear-gradient(90deg, $energy-orange, $accent-yellow);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      p {
+        font-size: 1rem;
+        opacity: 0.8;
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+}
+
+// Job Openings Section
+.job-openings {
+  position: relative;
+  padding: 120px 0;
+  z-index: 2;
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+    
+    h2 {
+      color: white;
+      position: relative;
+      padding-bottom: 20px;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: $energy-orange;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+.category-filters {
+  margin-bottom: 60px;
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .category-card {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    cursor: pointer;
+    transition: $transition;
+    position: relative;
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, 
+      rgba($energy-blue, 0.1), 
+      rgba($dark-navy, 0.1)
+    );
+
+    &.active {
+      border-color: rgba($energy-orange, 0.5);
+      background: linear-gradient(135deg, 
+        rgba($energy-orange, 0.15), 
+        rgba($energy-blue, 0.1)
+      );
+      
+      .arrow-icon {
+        transform: translateX(5px);
+        color: $energy-orange;
+      }
+
+      .category-icon {
+        background: linear-gradient(135deg, rgba($energy-orange, 0.2), rgba($accent-yellow, 0.1));
+        color: $energy-orange;
+      }
+      
+      .category-info h4 {
+        color: white;
+      }
+    }
+
+    .category-icon {
+      font-size: 1.8rem;
+      margin-right: 20px;
+      padding: 15px;
+      border-radius: 16px;
+      background: rgba($energy-blue, 0.15);
+      transition: $transition;
+      color: $accent-teal;
+    }
+
+    .category-info {
+      flex: 1;
+
+      h4 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, 0.9);
+        transition: color 0.3s;
+      }
+
+      .job-count {
+        font-size: 0.9rem;
+        color: $energy-orange;
+        font-weight: 600;
+        background: rgba($energy-orange, 0.1);
+        padding: 4px 12px;
+        border-radius: 12px;
+        display: inline-block;
+      }
+    }
+
+    .arrow-icon {
+      transition: $transition;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    &:hover:not(.active) {
+      transform: translateX(10px);
+      border-color: rgba($accent-teal, 0.3);
+      
+      .arrow-icon {
+        transform: translateX(5px);
+        color: $accent-teal;
+      }
+      
+      .category-icon {
+        background: rgba($accent-teal, 0.15);
+      }
+    }
+  }
+}
+
+.job-listings {
+  .job-card {
+    margin-bottom: 25px;
+    transition: $transition;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, 
+      rgba($energy-blue, 0.1), 
+      rgba($dark-navy, 0.1)
+    );
+    
+    &.expanded {
+      margin-bottom: 40px;
+      border-color: rgba($energy-orange, 0.4);
+      background: linear-gradient(135deg, 
+        rgba($energy-orange, 0.08), 
+        rgba($energy-blue, 0.1)
+      );
+      
+      .expand-indicator svg {
+        transform: rotate(90deg);
+        color: $energy-orange;
+      }
+    }
+
+    .job-header {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      cursor: pointer;
+      gap: 30px;
+      flex-wrap: wrap;
+
+      .job-category {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 120px;
+
+        .category-icon {
+          font-size: 2rem;
+          margin-bottom: 10px;
+          color: $energy-orange;
+          padding: 15px;
+          border-radius: 16px;
+          background: rgba($energy-orange, 0.1);
+          border: 1px solid rgba($energy-orange, 0.2);
+        }
+
+        .category-label {
+          font-size: 0.9rem;
+          text-align: center;
+          color: rgba(255, 255, 255, 0.8);
+        }
+      }
+
+      .job-title-section {
+        flex: 1;
+        min-width: 300px;
+
+        h3 {
+          font-size: 1.7rem;
+          margin-bottom: 8px;
+          color: white;
+        }
+
+        .subcategory {
+          color: $accent-teal;
+          font-weight: 600;
+          font-size: 0.9rem;
+          background: rgba($accent-teal, 0.1);
+          padding: 4px 12px;
+          border-radius: 12px;
+          display: inline-block;
+        }
+      }
+
+      .job-meta {
+        display: flex;
+        gap: 25px;
+        margin: 15px 0;
+
+        .meta-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.7);
+
+          svg {
+            color: $accent-teal;
+          }
+        }
+      }
+
+      .job-salary {
+        margin-left: auto;
+        
+        .salary {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: $accent-yellow;
+          padding: 12px 24px;
+          background: rgba($accent-yellow, 0.1);
+          border: 1px solid rgba($accent-yellow, 0.2);
+          border-radius: 12px;
+        }
+      }
+    }
+
+    .job-description {
+      padding: 0 30px 30px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      border-top: 1px solid rgba($energy-blue, 0.2);
+      margin-top: -15px;
+      padding-top: 25px;
+      font-size: 0.95rem;
+    }
+
+    .job-details {
+      padding: 0 30px 30px;
+      border-top: 1px solid rgba($energy-orange, 0.2);
+      margin-top: 20px;
+
+      .details-grid {
+        display: grid;
+        gap: 30px;
+        margin-bottom: 30px;
+
+        .detail-section {
+          h4 {
+            color: $energy-orange;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            
+            &::before {
+              content: '';
+              width: 6px;
+              height: 6px;
+              background: $energy-orange;
+              border-radius: 50%;
+            }
+          }
+
+          p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            padding-left: 16px;
+          }
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
+    .expand-indicator {
+      position: absolute;
+      right: 30px;
+      bottom: 30px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+      transition: $transition;
+      
+      svg {
+        transition: $transition;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 1.2rem;
+        
+        &.expanded {
+          transform: rotate(90deg);
+        }
+      }
+
+      &:hover {
+        background: rgba($energy-orange, 0.1);
+        
+        svg {
+          color: $energy-orange;
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    &:hover {
+      border-color: rgba($energy-orange, 0.3);
+      
+      .expand-indicator {
+        background: rgba($energy-orange, 0.05);
+      }
+    }
+  }
+
+  .no-jobs {
+    text-align: center;
+    padding: 60px;
+    background: linear-gradient(135deg, 
+      rgba($energy-blue, 0.1), 
+      rgba($dark-navy, 0.1)
+    );
+    
+    h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.1rem;
+    }
+  }
+}
+
+// Application Modal
+.application-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 20, 35, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.application-modal {
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 0;
+  background: linear-gradient(135deg, 
+    rgba($energy-blue, 0.15), 
+    rgba($dark-navy, 0.15)
+  );
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 30px 20px;
+    border-bottom: 1px solid rgba($energy-orange, 0.2);
+
+    h2 {
+      font-size: 1.8rem;
+      color: white;
+      
+      span {
+        color: $energy-orange;
+      }
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+      transition: $transition;
+
+      &:hover {
+        color: $energy-orange;
+        transform: rotate(90deg);
+        background: rgba($energy-orange, 0.1);
+      }
+    }
+  }
+}
+
+.application-form {
+  padding: 30px;
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+
+    .form-group {
+      &.full-width {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 12px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+        
+        &::after {
+          content: ' *';
+          color: $energy-orange;
+        }
+      }
+    }
+  }
+}
+
+.glass-input {
+  @include glass-effect;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  transition: $transition;
+  backdrop-filter: blur(10px);
+  background: rgba($energy-blue, 0.1);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgba($energy-orange, 0.5);
+    box-shadow: 0 0 0 3px rgba($energy-orange, 0.1);
+    background: rgba($energy-blue, 0.15);
+  }
+
+  &:read-only {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: rgba($energy-blue, 0.08);
+  }
+}
+
+.file-upload {
+  display: block;
+  cursor: pointer;
+  transition: $transition;
+  background: rgba($energy-blue, 0.1);
+
+  .upload-content {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.7);
+    transition: $transition;
+    padding: 16px 20px;
+  }
+
+  &:hover {
+    border-color: rgba($energy-orange, 0.5);
+    background: rgba($energy-blue, 0.15);
+    
+    .upload-content {
+      color: $energy-orange;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba($energy-blue, 0.2);
+
+  .cancel-btn {
+    @include glass-effect;
+    padding: 15px 30px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: $transition;
+    background: rgba($energy-blue, 0.1);
+
+    &:hover {
+      color: white;
+      border-color: rgba($energy-orange, 0.3);
+      background: rgba($energy-blue, 0.15);
+    }
+  }
+
+  .submit-btn {
+    padding: 15px 40px;
+    border-radius: 12px;
+    @include energy-button-gradient;
+  }
+}
+
+// Apply Now Button
+.apply-now-btn {
+  @include energy-button-gradient;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba($energy-orange, 0.2);
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .career-hero .hero-content h1 {
+    font-size: 3.2rem;
+    
+    span {
+      font-size: 3.5rem;
+    }
+  }
+  
+  .job-card .job-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    
+    .job-salary {
+      margin-left: 0;
+      align-self: flex-start;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .career-hero {
+    padding: 120px 0 80px;
+    
+    .hero-content h1 {
+      font-size: 2.5rem;
+      
+      span {
+        font-size: 2.8rem;
+      }
+    }
+  }
+  
+  .why-join-us .section-header h2,
+  .job-openings .section-header h2 {
+    font-size: 2.2rem;
+  }
+  
+  .application-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .category-filters .categories-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .job-card .job-header .job-title-section {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .glass-button,
+  .apply-now-btn {
+    padding: 14px 25px;
+    font-size: 1rem;
+  }
+  
+  .career-hero .hero-content h1 {
+    font-size: 2rem;
+    
+    span {
+      font-size: 2.2rem;
+    }
+  }
+  
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Container
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 3;
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba($energy-blue, 0.1);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, $energy-orange, $accent-yellow);
+  border-radius: 5px;
+  border: 2px solid $dark-navy;
+  
+  &:hover {
+    background: linear-gradient(180deg, lighten($energy-orange, 10%), lighten($accent-yellow, 10%));
+  }
+}
+
+// Selection Color
+::selection {
+  background: rgba($energy-orange, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba($energy-orange, 0.3);
+  color: white;
+}

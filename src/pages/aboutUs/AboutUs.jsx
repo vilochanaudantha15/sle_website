@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './aboutus.scss';
-import ceoimg from "../../assets/ceo.jpg";
+import ceoimg from "../../assets/minihydro.png";
 import signature from "../../assets/signature.png";
 import sethsiripaya from "../../assets/sethsiripaya.jpg";
 import deduruoyax from "../../assets/minihydro.png";
@@ -16,7 +16,7 @@ const AboutUs = () => {
 
   const stats = [
     { value: '13+', label: 'Years Experience' },
-    { value: '50MW+', label: 'Energy Capacity' },
+    { value: '20GWH+', label: 'Energy Capacity' },
     { value: '100%', label: 'Renewable Focus' },
     { value: '24/7', label: 'Support' }
   ];
@@ -296,41 +296,69 @@ const AboutUs = () => {
       </section>
 
       {/* CEO Message Section */}
-      <section className="modern-ceo-section">
-        <div className="container">
-          <motion.div 
-            className="ceo-grid"
-            variants={staggerChildren}
-            initial="initial"
-            whileInView="whileInView"
-            viewport={{ once: true }}
-          >
-            <motion.div className="ceo-message" variants={fadeInUp}>
-              <div className="section-header">
-                <div className="section-badge"><span>Message from Leadership</span></div>
-                <h2>Our Commitment to Sustainable Energy</h2>
-                <div className="divider"></div>
-              </div>
-              
-              <div className="message-content">
-                <p>At Sri Lanka Energies, we believe that sustainable energy is not just a business opportunity, but a responsibility we owe to future generations. Since our founding in 2012, we've been driven by a singular vision - to transform Sri Lanka's energy landscape through innovative renewable solutions.</p>
-                
-                <p>Our journey hasn't been without challenges, but the dedication of our team and the trust of our partners have enabled us to become a leader in Sri Lanka's renewable energy sector. We've successfully implemented projects that deliver clean energy while preserving our beautiful island's natural resources.</p>
-                
-                <p>As we look to the future, we remain committed to pushing boundaries in renewable technology, creating meaningful employment opportunities, and contributing to Sri Lanka's energy independence. I invite you to join us in this important mission.</p>
-              </div>
-              
-              <motion.button 
-                className="btn-primary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Read Full Message
-              </motion.button>
-            </motion.div>
-          </motion.div>
+      
+<section className="modern-ceo-section">
+  <div className="container">
+    <motion.div
+      className="ceo-grid"
+      variants={staggerChildren}
+      initial="initial"
+      whileInView="whileInView"
+      viewport={{ once: true }}
+    >
+      {/* CEO Image & Info */}
+      
+      {/* CEO Message */}
+      <motion.div className="ceo-message" variants={fadeInUp}>
+        <div className="section-header">
+          <div className="section-badge">
+            <span>Message from Leadership</span>
+          </div>
+          <h2>Our Commitment to Sustainable Energy</h2>
+          <div className="divider"></div>
         </div>
-      </section>
+
+        <div className="message-content">
+          <p>
+            At Sri Lanka Energies, we believe that sustainable energy is not just a business opportunity, but a responsibility we owe to future generations. Since our founding in 2012, we’ve been driven by a singular vision – to transform Sri Lanka’s energy landscape through innovative renewable solutions.
+          </p>
+
+          <p>
+            Our journey hasn’t been without challenges, but the dedication of our team and the trust of our partners have enabled us to become a leader in Sri Lanka’s renewable energy sector. We’ve successfully implemented projects that deliver clean energy while preserving our beautiful island’s natural resources.
+          </p>
+
+          <p>
+            As we look to the future, we remain committed to pushing boundaries in renewable technology, creating meaningful employment opportunities, and contributing to Sri Lanka’s energy independence. I invite you to join us in this important mission.
+          </p>
+        </div>
+
+        <motion.button
+          className="btn-primary"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Read Full Message
+        </motion.button>
+      </motion.div>
+      <motion.div className="ceo-image" variants={fadeInUp}>
+        <div className="image-wrapper">
+          {/* Replace with your actual CEO photo */}
+          <img
+            src={ceoimg}   
+            alt="Dr. Kamal Perera – CEO of Sri Lanka Energies"
+            className="ceo-photo"
+          />
+
+          
+
+          {/* Optional handwritten signature */}
+         
+        </div>
+      </motion.div>
+
+    </motion.div>
+  </div>
+</section>
 
       {/* Stats Section */}
       <section className="modern-stats-section">

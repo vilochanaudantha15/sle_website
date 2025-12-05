@@ -115,6 +115,11 @@ function Navbar() {
               <span className="navbar__link-text">Contact</span>
               <div className="navbar__link-underline"></div>
             </Link>
+
+            <Link to="/career" className="navbar__link" onClick={closeAllMenus}>
+              <span className="navbar__link-text">Careers</span>
+              <div className="navbar__link-underline"></div>
+            </Link>
           </div>
         </div>
 
@@ -180,7 +185,7 @@ function Navbar() {
             </div>
           ) : (
             <div className="auth-buttons">
-              <Link to="#login" className="btn btn--secondary">
+              <Link to="/signup" className="btn btn--secondary">
                 Sign In
               </Link>
              <Link to="/" className="btn btn--primary" onClick={closeAllMenus}>

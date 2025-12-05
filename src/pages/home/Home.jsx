@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import "./Home.scss";
 import Featured from "../../components/featured/Featured";
@@ -13,10 +13,15 @@ import Aluminumcover from "../../assets/alu.jpeg";
 import consultaion from "../../assets/energy-consultation.jpg";
 import manpower from "../../assets/manpower.jpeg";
 import slecover from "../../assets/sle1.jpg";
-import sethsiripaya from "../../assets/sethsiripaya.jpg"
-import minihydro from "../../assets/minihydro.png"
+import sethsiripaya from "../../assets/sethsiripaya.jpg";
+import minihydro from "../../assets/minihydro.png";
 
 function Home() {
+  // THIS LINE FIXES IT → Always start from the top when Home loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0.3]);
@@ -91,11 +96,11 @@ function Home() {
                 transition={{ delay: 0.6 }}
               >
                 <div className="stat">
-                  <h3>50+</h3>
+                  <h3>10+</h3>
                   <span>Projects Completed</span>
                 </div>
                 <div className="stat">
-                  <h3>50MW+</h3>
+                  <h3>20GWH+</h3>
                   <span>Energy Generated</span>
                 </div>
                 <div className="stat">
@@ -554,7 +559,7 @@ function Home() {
         transition={{ delay: 0.7 }}
       >
         <div className="stat-item">
-          <span className="stat-number">50+</span>
+          <span className="stat-number">10+</span>
           <span className="stat-label">Projects Completed</span>
         </div>
         <div className="stat-divider"></div>

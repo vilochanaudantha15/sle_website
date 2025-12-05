@@ -262,7 +262,18 @@
           gap: 1rem;
         }
 
-        .btn-primary,
+        .btn-primary
+        {
+          padding: 1.2rem 4.5rem;
+          border-radius: 50px;
+          font-size: 1.1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-width: 150px;
+
+        }
+
         .btn-secondary {
           padding: 1.2rem 2.5rem;
           border-radius: 50px;
@@ -437,7 +448,7 @@
   // Explore Section
   .explore-section {
     padding: 6rem 0;
-    background: linear-gradient(135deg, rgba(254, 161, 22, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    background: transparent;
 
     .solutions-grid {
       display: grid;
@@ -518,7 +529,7 @@
 
   // Features Section
   .features-section {
-    padding: 8rem 0;
+  
     position: relative;
     overflow: hidden;
 
@@ -623,6 +634,7 @@
         cursor: pointer;
         overflow: hidden;
         margin-top: 2rem;
+        margin-bottom: 4rem;
 
         .button-glow {
           position: absolute;
@@ -678,7 +690,7 @@
   }
 
   // Projects Section
-  .projects-section { padding: 6rem 0; position: relative; z-index: 2; }
+  .projects-section { padding: 6rem 0; position: relative; z-index: 1; }
 
   // CTA Section (your existing one is already responsive)
   .cta-section {
@@ -923,6 +935,7 @@
 // General Responsive Fixes (kept your existing ones + improved)
 @media (max-width: 768px) {
   .home {
+    margin-top: 4rem;
     .section-header h2 { font-size: 2.2rem; }
     .features-section .features-grid { grid-template-columns: 1fr; gap: 3rem; }
     .explore-section .solutions-grid { grid-template-columns: 1fr; }
@@ -932,6 +945,7 @@
 
 @media (max-width: 480px) {
   .home {
+    
     .container { padding: 0 15px; }
     .section-header h2 { font-size: 1.9rem; }
     .features-content h1 { font-size: 2.2rem; }
@@ -952,6 +966,7 @@
       font-size: 3.5rem;
       font-weight: 700;
       background: linear-gradient(135deg, #FEA116 0%, #ff8c42 100%);
+      
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -968,25 +983,23 @@
 
   .projects-slider {
   position: relative;
-  padding: 2rem 0;
+  padding: 2rem 1rem;
   margin: 0 calc(-50vw + 50%);   // This magic line makes it full-bleed
-  left: 70%;
+  left: 60%;
   right: 50%;
   width: 100vw;                  // Full viewport width
   transform: translateX(-50%);
 
-  // Optional: add subtle background to make the extension feel intentional
   background: rgba(255, 255, 255, 0.015);
   backdrop-filter: blur(10px);
 
-  // Fade edges — now wider and stronger for the extended width
   &::before,
   &::after {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 300px;                // Increased from 120px → 300px for wider coverage
+    width: 300px;
     z-index: 10;
     pointer-events: none;
   }
@@ -1001,169 +1014,235 @@
     background: linear-gradient(to left, #1220487f 0%, transparent 100%);
   }
 
-  // Ensure the actual slide track stays centered
   .slide-track,
   .slider-wrapper {
-    max-width: 1600px;           // Optional: cap the content width for very large screens
+    max-width: 1600px;
     margin: 0 auto;
     padding: 0 2rem;
   }
 }
+
+.project-card-wrapper {
+  padding: 0 1rem;
+}
+
+.project-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  height: 480px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-16px);
+    border-color: rgba(254, 161, 22, 0.4);
+    box-shadow:
+      0 30px 60px rgba(0, 0, 0, 0.3),
+      0 0 80px rgba(254, 161, 22, 0.15);
+
+    .card-glow-effect {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    .project-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.project-image {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(254, 161, 22, 0.9), rgba(255, 140, 0, 0.8));
+  display: flex;
+  align-items: flex-end;
+  padding: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s ease;
+
+  .overlay-content {
+    color: white;
+
+    .tag {
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+  }
+}
+
+.project-info {
+  padding: 1.8rem;
+
+  .info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .capacity {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FEA116, #ff8c42);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .info-stats {
+    display: flex;
+    gap: 1.5rem;
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+
+      .icon {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+.card-glow-effect {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(254, 161, 22, 0.15), transparent 70%);
+  opacity: 0;
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+/* ============================ */
+/*        MOBILE RESPONSIVE     */
+/* ============================ */
+@media (max-width: 768px) {
+
+  .projects-slider {
+    margin: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    transform: none;
+    padding: 1.5rem 1rem;
+
+    &::before,
+    &::after {
+      width: 80px;
+    }
+  }
+
+  .slide-track,
+  .slider-wrapper {
+    max-width: 100% !important;
+    padding: 0 0.5rem !important;
+  }
+
   .project-card-wrapper {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
   }
 
   .project-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 24px;
-    overflow: hidden;
-    height: 480px;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+    height: 360px;
+    border-radius: 18px;
 
     &:hover {
-      transform: translateY(-16px);
-      border-color: rgba(254, 161, 22, 0.4);
-      box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.3),
-        0 0 80px rgba(254, 161, 22, 0.15);
-
-      .card-glow-effect {
-        opacity: 1;
-        transform: scale(1.15);
-      }
-
-      .project-overlay {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      transform: none;
     }
   }
 
   .project-image {
-    position: relative;
-    height: 280px;
-    overflow: hidden;
+    height: 200px;
 
     img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s ease;
-    }
-
-    &:hover img {
-      transform: scale(1.1);
+      transform: none !important;
     }
   }
 
   .project-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(254, 161, 22, 0.9), rgba(255, 140, 0, 0.8));
-    display: flex;
-    align-items: flex-end;
-    padding: 2rem;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.5s ease;
+    padding: 1.2rem;
 
     .overlay-content {
-      color: white;
-
-      .tag {
-        display: inline-block;
-        background: rgba(0, 0, 0, 0.4);
-        padding: 0.4rem 1rem;
-        border-radius: 50px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-      }
-
       h4 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
       }
 
       p {
-        font-size: 1rem;
-        opacity: 0.9;
+        font-size: 0.85rem;
       }
     }
   }
 
   .project-info {
-    padding: 1.8rem;
+    padding: 1.2rem;
 
-    .info-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.2rem;
+    .info-header h3 {
+      font-size: 1rem;
+    }
 
-      h3 {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: #ffffff;
-      }
-
-      .capacity {
-        font-size: 1.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #FEA116, #ff8c42);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+    .capacity {
+      font-size: 1.2rem;
     }
 
     .info-stats {
-      display: flex;
-      gap: 1.5rem;
+      gap: 1rem;
 
       .stat {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        font-size: 0.95rem;
-        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.8rem;
 
         .icon {
-          font-size: 1.1rem;
+          font-size: 1rem;
         }
       }
     }
   }
-
-  .card-glow-effect {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(254, 161, 22, 0.15), transparent 70%);
-    opacity: 0;
-    transition: all 0.6s ease;
-    pointer-events: none;
-  }
 }
-
-// Responsive
-@media (max-width: 768px) {
-  .projects-showcase {
-    padding: 6rem 0;
-
-    .section-header h2 {
-      font-size: 2.5rem;
-    }
-
-    .project-card {
-      height: 440px;
-    }
-
-    .project-overlay .overlay-content h4 {
-      font-size: 1.3rem;
-    }
-  }
 }
