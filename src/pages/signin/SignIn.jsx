@@ -1,49 +1,51 @@
 // src/pages/signin/SignIn.jsx
-import React, { useState } from 'react';
-import './signin.scss';
-import { FaApple, FaGoogle } from 'react-icons/fa';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./signin.scss";
+import { FaApple, FaGoogle } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignInPage = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
+      // Clean relative API path — works everywhere
+      const res = await axios.post("/api/auth/login", formData);
 
-      // Save authentication data
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      // Save token and user data
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      setMessage('Login successful! Redirecting to Admin Panel...');
+      setMessage("Login successful! Redirecting...");
 
-      // Redirect to /admin/applications (your existing route)
+      // Redirect to admin dashboard
       setTimeout(() => {
-        navigate('/admin/applications');
+        navigate("/admin/applications");
       }, 1200);
-
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password');
+      setError(
+        err.response?.data?.message || "Invalid email or password"
+      );
     } finally {
       setLoading(false);
     }
@@ -51,6 +53,7 @@ const SignInPage = () => {
 
   return (
     <div className="signup-container">
+      {/* Left Panel - Form */}
       <div className="signup-form-panel">
         <h1 className="logo">Sri Lanka Energies</h1>
 
@@ -85,15 +88,21 @@ const SignInPage = () => {
               <span className="password-toggle">Eye</span>
             </div>
 
-            <a href="#" className="forgot-password-link">Forgot Password?</a>
+            <a href="#" className="forgot-password-link">
+              Forgot Password?
+            </a>
 
-            <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? 'Signing In...' : 'Sign In'}
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={loading}
+            >
+              {loading ? "Signing In..." : "Sign In"}
             </button>
           </form>
 
           <div className="social-login-separator">
-            <span>or</span>
+            <span>or continue with</span>
           </div>
 
           <div className="social-login">
@@ -107,22 +116,34 @@ const SignInPage = () => {
         </div>
 
         <div className="footer-links">
-          <p>Don't have an account? <a href="/signup">Create an account</a></p>
+          <p>
+            Don't have an account?{" "}
+            <a
+              href="/signup"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/signup");
+              }}
+            >
+              Create an account
+            </a>
+          </p>
           <a href="#">Terms & Conditions</a>
         </div>
       </div>
 
+      {/* Right Panel - Visual */}
       <div className="signup-visual-panel">
         <div className="content-overlay">
           <div className="task-review-card">
             <strong>Task Review With Team</strong>
             <br />
-            09:30am-10:00am
+            09:30am - 10:00am
           </div>
           <div className="daily-meeting-card">
             <strong>Daily Meeting</strong>
             <br />
-            10:00am-01:00pm
+            10:00am - 01:00pm
           </div>
         </div>
       </div>
